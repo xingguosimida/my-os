@@ -3,6 +3,7 @@ global _start
 
 CODE_SEG equ 0x08
 DATA_SEG equ 0x10
+extern kernel_main
 
 _start:
     mov ax, DATA_SEG
@@ -14,6 +15,7 @@ _start:
     mov ebp, 0x00200000
     mov esp, ebp
     jmp A20
+    call kernel_main
     jmp $
     
 A20:
@@ -21,3 +23,5 @@ A20:
     or al, 2
     out 0x92, al
     ret    
+    
+times 512-($ - $$) db 0
