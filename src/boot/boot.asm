@@ -36,62 +36,62 @@ load32:
     jmp CODE_SEG:0x0100000
     
 ata_lba_read:
-    pushfd
-    and eax, 0x0FFFFFFF
-    push eax
-    push ebx
-    push ecx
-    push edx
-    push edi
- 
-    mov ebx, eax         ; Save LBA in EBX
- 
-    mov edx, 0x01F6      ; Port to send drive and bit 24 - 27 of LBA
-    shr eax, 24          ; Get bit 24 - 27 in AL
-    or al, 11100000b     ; Set bit 6 in AL for LBA mode
+    mov ebx, eax ; Backup the LBA
+    ; Send the highest 8 bits of the lba to hard disk controller
+    shr eax, 24
+    or eax, 0xE0 ; Select the  master drive
+    mov dx, 0x1F6
     out dx, al
- 
-    mov edx, 0x01F2      ; Port to send number of sectors
-    mov al, cl           ; Get number of sectors from CL
-    out dx, al
- 
-    mov edx, 0x1F3       ; Port to send bit 0 - 7 of LBA
-    mov eax, ebx         ; Get LBA from EBX
-    out dx, al
- 
-    mov edx, 0x1F4       ; Port to send bit 8 - 15 of LBA
-    mov eax, ebx         ; Get LBA from EBX
-    shr eax, 8           ; Get bit 8 - 15 in AL
-    out dx, al
- 
-    mov edx, 0x1F5       ; Port to send bit 16 - 23 of LBA
-    mov eax, ebx         ; Get LBA from EBX
-    shr eax, 16          ; Get bit 16 - 23 in AL
-    out dx, al
- 
-    mov edx, 0x1F7       ; Command port
-    mov al, 0x20         ; Read with retry.
-    out dx, al 
+    ; Finished sending the highest 8 bits of the lba
 
-.still_going:
+    ; Send the total sectors to read
+    mov eax, ecx
+    mov dx, 0x1F2
+    out dx, al
+    ; Finished sending the total sectors to read
+
+    ; Send more bits of the LBA
+    mov eax, ebx ; Restore the backup LBA
+    mov dx, 0x1F3
+    out dx, al
+    ; Finished sending more bits of the LBA
+
+    ; Send more bits of the LBA
+    mov dx, 0x1F4
+    mov eax, ebx ; Restore the backup LBA
+    shr eax, 8
+    out dx, al
+    ; Finished sending more bits of the LBA
+
+    ; Send upper 16 bits of the LBA
+    mov dx, 0x1F5
+    mov eax, ebx ; Restore the backup LBA
+    shr eax, 16
+    out dx, al
+    ; Finished sending upper 16 bits of the LBA
+
+    mov dx, 0x1f7
+    mov al, 0x20
+    out dx, al
+
+    ; Read all sectors into memory
+.next_sector:
+    push ecx
+
+; Checking if we need to read
+.try_again:
+    mov dx, 0x1f7
     in al, dx
-    test al, 8           ; the sector buffer requires servicing.
-    jz .still_going      ; until the sector buffer is ready.
- 
-    mov eax, 256         ; to read 256 words = 1 sector
-    xor bx, bx
-    mov bl, cl           ; read CL sectors
-    mul bx
-    mov ecx, eax         ; ECX is counter for INSW
-    mov edx, 0x1F0       ; Data port, in and out
-    rep insw             ; in to [EDI]
- 
-    pop edi
-    pop edx
+    test al, 8
+    jz .try_again
+
+; We need to read 256 words at a time
+    mov ecx, 256
+    mov dx, 0x1F0
+    rep insw
     pop ecx
-    pop ebx
-    pop eax
-    popfd
+    loop .next_sector
+    ; End of reading sectors into memory
     ret
 
 gdt_start:

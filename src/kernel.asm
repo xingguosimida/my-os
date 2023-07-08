@@ -14,14 +14,10 @@ _start:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
-    jmp A20
-    call kernel_main
-    jmp $
-    
-A20:
     in al, 0x92
     or al, 2
     out 0x92, al
-    ret    
+    call kernel_main
+    jmp $
     
 times 512-($ - $$) db 0
