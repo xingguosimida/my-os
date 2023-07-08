@@ -20,6 +20,7 @@ A20:
     in al, 0x92
     or al, 2
     out 0x92, al
+    ret
 
 enter_protected_mode:
     cli
@@ -41,6 +42,7 @@ load32:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
+    jmp A20
     jmp $
 
 gdt_start:
