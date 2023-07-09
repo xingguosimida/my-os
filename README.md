@@ -1,7 +1,7 @@
 # my-os
 操作系统实验
 # How to run it
-执行下面脚本以安装必要的依赖
+执行下面命令以安装必要的依赖
 ```sh
 brew install bison
 brew install flex

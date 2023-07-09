@@ -35,7 +35,7 @@ void terminal_write_char(char c, char colour)
 }
 void terminal_initialize()
 {
-    video_mem = (uint16_t *)(0xB8000);//   显存的开始地址
+    video_mem = (uint16_t *)(0xB8000); //   显存的开始地址
     terminal_row = 0;
     terminal_col = 0;
     for (int y = 0; y < VGA_HEIGHT; y++)
