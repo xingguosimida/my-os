@@ -19,3 +19,8 @@ brew install qemu
 ```
 
 Run `./auto/run`.
+
+# Progress 
+- [x] Bootloader
+- [x] 交叉编译C语言代码
+- [] 中断描述表
