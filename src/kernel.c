@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "idt/idt.h"
+#include "io/io.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
@@ -68,12 +69,10 @@ void print(const char *str)
     }
 }
 
-extern void problem();
-
 void kernel_main()
 {
     terminal_initialize();
     idt_init();
     print("Hello world!\n");
-    problem();
+    outb(0x60, 0xff);
 }
