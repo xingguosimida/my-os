@@ -23,4 +23,5 @@ Run `./auto/run`.
 # Progress 
 - [x] Bootloader
 - [x] 交叉编译C语言代码
-- [] 中断描述表
+- [x] 中断描述表
+

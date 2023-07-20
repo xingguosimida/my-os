@@ -1,5 +1,6 @@
 [BITS 32]
 global _start
+global problem
 
 CODE_SEG equ 0x08
 DATA_SEG equ 0x10
@@ -19,5 +20,9 @@ _start:
     out 0x92, al
     call kernel_main
     jmp $
-   
+
+problem:
+    mov eax, 0
+    div eax
+
 times 512-($ - $$) db 0
