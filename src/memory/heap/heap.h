@@ -13,14 +13,12 @@
 
 typedef unsigned char HEAP_BLOCK_TABLE_ENTRY;
 
-struct heap_table
-{
+struct heap_table {
     HEAP_BLOCK_TABLE_ENTRY *entries;
     size_t total;
 };
 
-struct heap
-{
+struct heap {
     struct heap_table *heap_table;
     void *start_address;
 };
@@ -32,4 +30,5 @@ void *heap_malloc(struct heap *heap, size_t size);
 void heap_free(struct heap *heap, void *ptr);
 
 void heap_mark_blocks_free(struct heap *heap, int starting_block);
+
 #endif

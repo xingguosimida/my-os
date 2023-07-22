@@ -24,4 +24,4 @@ Run `./auto/run`.
 - [x] Bootloader
 - [x] 交叉编译C语言代码
 - [x] 中断描述表
-
+- [x] 堆
