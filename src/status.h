@@ -1,0 +1,8 @@
+#ifndef STATUS_H
+#define STATUS_H
+
+#define KERNEL_OK 0
+#define KERNEL_IO_ERROR 1
+#define KERNEL_ARGUMENT_ERROR 2
+#define KERNEL_NO_MEMORY_ERROR 3
+#endif

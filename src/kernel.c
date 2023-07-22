@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "idt/idt.h"
 #include "io/io.h"
+#include "memory/heap/kernel_heap.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
@@ -72,7 +73,16 @@ void print(const char *str)
 void kernel_main()
 {
     terminal_initialize();
+    kernel_heap_init();
     idt_init();
+    void *ptr1 = kernel_malloc(50);
+    void *ptr2 = kernel_malloc(5000);
+    kernel_free(ptr1);
+    void *ptr3 = kernel_malloc(50);
+    if (ptr1 || ptr2 || ptr3)
+    {
+    }
+
     print("Hello world!\n");
-    outb(0x60, 0xff);
+    // outb(0x60, 0xff);
 }

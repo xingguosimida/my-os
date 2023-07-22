@@ -3,6 +3,6 @@
 
 #include <stddef.h>
 
-void* set_memory(void *ptr, int c, size_t size);
+void *set_memory(void *ptr, int c, size_t size);
 
 #endif
