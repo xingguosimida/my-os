@@ -26,7 +26,7 @@ _start:
 
     mov al, 00000001b
     out 0x21, al
-    sti
+    ; sti
     ; PIC 结束
 
     call kernel_main

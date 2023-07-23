@@ -63,6 +63,7 @@ void kernel_main() {
     terminal_initialize();
     kernel_heap_init();
     idt_init();
+    enable_interrupts();
     void *ptr1 = kernel_malloc(50);
     void *ptr2 = kernel_malloc(5000);
     kernel_free(ptr1);
